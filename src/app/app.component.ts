@@ -12,5 +12,5 @@ import { VerifydelaccComponent } from './verifydelacc/verifydelacc.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'mobile-app';
+  title = 'mobile-apps';
 }
