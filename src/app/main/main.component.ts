@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-
+import {  ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+declare var intlTelInput: any;
 @Component({
   selector: 'app-main',
   standalone: true,
