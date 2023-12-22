@@ -5,25 +5,25 @@
         <h4 class="heading-text">Delete your Account</h4>
       </div>
       <div class="form-group">
-        <label for="phoneNumber" style="font-weight: 500"
+        <label for="contactNumber" style="font-weight: 500"
           >Mobile Number for Players</label
         >
         <!-- <input type="mobile" class="form-control" placeholder="Enter mobile"> -->
         <input
           type="tel"
-          id="phoneNumber"
+          id="contactNumber"
           maxlength="10"
           class="form-control input"
           placeholder="Enter mobile"
-          formControlName="phoneNumber"
-          (input)="onInputChange('phoneNumber')"
+          formControlName="contactNumber"
+          (input)="onInputChange('contactNumber')"
         />
       </div>
       <span
         style="color: red"
         *ngIf="
-          delform.get('phoneNumber')?.invalid &&
-          delform.get('phoneNumber')?.touched
+          delform.get('contactNumber')?.invalid &&
+          delform.get('contactNumber')?.touched
         "
       >
         Please enter a valid 10-digit mobile number

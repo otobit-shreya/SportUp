@@ -1,4 +1,5 @@
 import { NgIf } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -15,7 +16,7 @@ interface RouteParams {
 @Component({
   selector: 'app-verifydelacc',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, NgIf],
+  imports: [RouterLink, ReactiveFormsModule, NgIf,HttpClientModule],
   templateUrl: './verifydelacc.component.html',
   styleUrl: './verifydelacc.component.css',
 })
@@ -24,7 +25,7 @@ export class VerifydelaccComponent implements OnInit {
   id: any;
   
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private router: Router, private route: ActivatedRoute,private http: HttpClient) {
     const params = this.route.snapshot.params as RouteParams;
     this.id = params.id;
     console.log(this.id, 'route params');
@@ -51,5 +52,13 @@ export class VerifydelaccComponent implements OnInit {
       this.router.navigate(['/delconfirm']);
     }
     console.log(this.verifydel, 'verify del');
+
+    this.http.post('https://sportupapi.otobit.com/api/Player/delete-account/verify-otp', this.verifydel.value).subscribe(x => {
+      console.log(x, 'x');
+
+    }, error => {
+      console.log(error, 'err');
+
+    })
   }
 }

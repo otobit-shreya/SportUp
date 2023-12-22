@@ -1,4 +1,5 @@
 import { NgIf } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -7,21 +8,24 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { error } from 'console';
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, NgIf],
+  imports: [RouterLink, ReactiveFormsModule, NgIf, HttpClientModule],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
 })
 export class MainComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http: HttpClient) {
+
+  }
 
   delform!: FormGroup;
 
   ngOnInit(): void {
     this.delform = new FormGroup({
-      phoneNumber: new FormControl('', [
+      contactNumber: new FormControl('', [
         Validators.required,
         Validators.pattern('^[0-9]*$'),
         Validators.minLength(10),
@@ -33,6 +37,8 @@ export class MainComponent implements OnInit {
       ]),
     });
   }
+
+
 
   customEmailValidator(
     control: FormControl
@@ -54,17 +60,17 @@ export class MainComponent implements OnInit {
   }
 
   isAnyFieldValid() {
-    const phoneNumberControl = this.delform.get('phoneNumber');
+    const contactNumberControl = this.delform.get('contactNumber');
     const emailControl = this.delform.get('email');
 
     return (
-      (phoneNumberControl && phoneNumberControl.valid) ||
+      (contactNumberControl && contactNumberControl.valid) ||
       (emailControl && emailControl.valid)
     );
   }
 
   onInputChange(field: string): void {
-    const otherField = field === 'phoneNumber' ? 'email' : 'phoneNumber';
+    const otherField = field === 'contactNumber' ? 'email' : 'contactNumber';
 
     const currentControl = this.delform.get(field);
     const otherControl = this.delform.get(otherField);
@@ -79,20 +85,28 @@ export class MainComponent implements OnInit {
   }
 
   onSubmit() {
-    const phoneNumberControl = this.delform.get('phoneNumber');
+    const contactNumberControl = this.delform.get('contactNumber');
     const emailControl = this.delform.get('email');
-    const selectedOption = this.delform.get('phoneNumber')?.value
-      ? 'phoneNumber'
+    const selectedOption = this.delform.get('contactNumber')?.value
+      ? 'contactNumber'
       : 'email';
-      const phoneVal = this.delform.getRawValue().phoneNumber;
-      const emailVal = this.delform.getRawValue().email;
+    const phoneVal = this.delform.getRawValue().contactNumber;
+    const emailVal = this.delform.getRawValue().email;
 
     if (
-      (phoneNumberControl && phoneNumberControl.valid) ||
+      (contactNumberControl && contactNumberControl.valid) ||
       (emailControl && emailControl.valid)
     ) {
       this.router.navigate([`/verifydel/${selectedOption}`],);
     }
+
+    this.http.post('https://sportupapi.otobit.com/api/Player/delete-account/request-otp', this.delform.value).subscribe(x => {
+      console.log(x, 'x');
+
+    }, error => {
+      console.log(error, 'err');
+
+    })
 
     console.log(this.delform, 'del main form');
   }
