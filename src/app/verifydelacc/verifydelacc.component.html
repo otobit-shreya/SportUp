@@ -1,17 +1,47 @@
-<div class="card main" >
+<div class="card main">
   <div class="card-body">
     <h5 class="card-title heading-text">Delete Your Account</h5>
-    <p class="card-text p-text">
-      Please enter the 4 digits verification code sent to
-      <span class="mail-text">email</span>
+    <p class="card-text p-text" *ngIf="id === 'email'">
+      Please enter the 4 digits verification code sent to 
+      <span><b>your mail</b></span>
     </p>
 
-    <div>
-      <label class="label-text">Verify your mobile Number</label>
-      <input type="" placeholder="Enter your OTP" class="input-field"/>
-    </div>
-    <div>
-        <button class="btn" routerLink="/delconfirm"><span class="btn-text">Continue</span></button>
-    </div>
+    <p class="card-text p-text" *ngIf="id === 'phoneNumber'">
+      Please enter the 4 digits verification code sent to
+      <span><b>your mobile number</b></span> through SMS
+    </p>
+
+
+    <form [formGroup]="verifydel" (ngSubmit)="onSubmit()">
+      <div>
+        <label *ngIf="id === 'phoneNumber'" for="phoneNumber" class="label-text"
+          >Verify your mobile Number</label
+        >
+        <label *ngIf="id === 'email'" for="phoneNumber" class="label-text"
+          >Verify your Email</label
+        >
+        <input
+          id="phoneNumber"
+          type=""
+          placeholder="Enter your OTP"
+          class="input-field"
+          formControlName="phoneNumber"
+        />
+      </div>
+      <span
+        style="color: red"
+        *ngIf="
+          verifydel.get('phoneNumber')?.invalid &&
+          verifydel.get('phoneNumber')?.touched
+        "
+      >
+        Please enter a valid 10-digit mobile number
+      </span>
+      <div>
+        <button type="submit" class="btn" [disabled]="verifydel.invalid">
+          <span class="btn-text">Continue</span>
+        </button>
+      </div>
+    </form>
   </div>
 </div>

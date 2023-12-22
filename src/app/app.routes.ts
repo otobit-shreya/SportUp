@@ -5,7 +5,7 @@ import { DelconfirmComponent } from './delconfirm/delconfirm.component';
 
 export const routes: Routes = [
   { path: '', component: MainComponent },
-  { path: 'verifydel', component: VerifydelaccComponent },
+  { path: 'verifydel/:id', component: VerifydelaccComponent },
   { path: 'delconfirm', component: DelconfirmComponent },
 ];
 
