@@ -35,8 +35,8 @@ export class VerifydelaccComponent implements OnInit {
       phoneNumber: new FormControl('', [
         Validators.required,
         Validators.pattern('^[0-9]*$'),
-        Validators.minLength(10),
-        Validators.maxLength(10),
+        Validators.minLength(4),
+        Validators.maxLength(4),
       ]),
     });
   }
