@@ -8,9 +8,15 @@ import { DelconfirmComponent } from './delconfirm/delconfirm.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet,MainComponent, VerifydelaccComponent, DelconfirmComponent],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    MainComponent,
+    VerifydelaccComponent,
+    DelconfirmComponent,
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
   title = 'mobile-apps';
