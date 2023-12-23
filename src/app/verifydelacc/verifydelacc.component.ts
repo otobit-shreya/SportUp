@@ -29,7 +29,7 @@ export class VerifydelaccComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private _cs: ContactService
+    public _cs: ContactService
   ) {
     const params = this.route.snapshot.params as RouteParams;
     this.id = params.id;
