@@ -18,16 +18,13 @@
 
 
       <div>
-        <label *ngIf="id === 'contactNumber'" for="contactNumber" class="label-text">Verify your mobile Number</label>
-        <label *ngIf="id === 'email'" for="contactNumber" class="label-text">Verify your Email</label>
-        <input id="contactNumber" type="" placeholder="Enter your contactNumber" class="input-field"
-        formControlName="contactNumber" />
-        <input id="otp" type="" maxlength="6" placeholder="Enter your OTP" class="input-field"
+       
+        <input id="otp" type="text" maxlength="6" placeholder="Enter your OTP" class="input-field"
           formControlName="otp" />
       </div>
       <span style="color: red" *ngIf="
-          verifydel.get('contactNumber')?.invalid &&
-          verifydel.get('contactNumber')?.touched
+          verifydel.get('otp')?.invalid &&
+          verifydel.get('otp')?.touched
         ">
         Please enter a valid OTP
       </span>

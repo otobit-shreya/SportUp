@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ContactService } from '../service/contact.service';
 
 interface RouteParams {
   id: string;
@@ -16,7 +17,7 @@ interface RouteParams {
 @Component({
   selector: 'app-verifydelacc',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, NgIf,HttpClientModule],
+  imports: [RouterLink, ReactiveFormsModule, NgIf, HttpClientModule],
   templateUrl: './verifydelacc.component.html',
   styleUrl: './verifydelacc.component.css',
 })
@@ -24,7 +25,12 @@ export class VerifydelaccComponent implements OnInit {
   verifydel!: FormGroup;
   id: any;
 
-  constructor(private router: Router, private route: ActivatedRoute,private http: HttpClient) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private _cs: ContactService
+  ) {
     const params = this.route.snapshot.params as RouteParams;
     this.id = params.id;
     console.log(this.id, 'route params');
@@ -32,32 +38,37 @@ export class VerifydelaccComponent implements OnInit {
 
   ngOnInit(): void {
     this.verifydel = new FormGroup({
-      contactNumber: new FormControl('', [
-        
-      ]),
-      otp: new FormControl('', [
-        Validators.required,
-      ]),
+      otp: new FormControl('', [Validators.required]),
     });
   }
 
   onSubmit() {
-    console.log('click');
+    // const contactNumberControl = this.verifydel.get('contactNumber');
+    // console.log(contactNumberControl && contactNumberControl.valid, 'ppp');
 
-    const contactNumberControl = this.verifydel.get('contactNumber');
-    console.log(contactNumberControl && contactNumberControl.valid, 'ppp');
+    // if (contactNumberControl && contactNumberControl.valid) {
+    //   this.router.navigate(['/delconfirm']);
+    // }
+    const contactNumber = this._cs.conatctval;
+    const otp = this.verifydel.getRawValue().otp;
 
-    if (contactNumberControl && contactNumberControl.valid) {
-      this.router.navigate(['/delconfirm']);
-    }
-    console.log(this.verifydel, 'verify del');
+    console.log(contactNumber, 'check final');
 
-    this.http.post('https://sportupapi.otobit.com/api/Player/delete-account/verify-otp', this.verifydel.value).subscribe(x => {
-      console.log(x, 'x');
-
-    }, error => {
-      console.log(error, 'err');
-
-    })
+    this.http
+      .post(
+        'https://sportupapi.otobit.com/api/Player/delete-account/verify-otp',
+        {
+          otp: otp,
+          contactNumber: contactNumber,
+        }
+      )
+      .subscribe(
+        (x) => {
+          console.log(x, 'x');
+        },
+        (error) => {
+          console.log(error, 'err');
+        }
+      );
   }
 }

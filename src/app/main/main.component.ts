@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { error } from 'console';
+import { ContactService } from '../service/contact.service';
 @Component({
   selector: 'app-main',
   standalone: true,
@@ -17,9 +18,11 @@ import { error } from 'console';
   styleUrl: './main.component.css',
 })
 export class MainComponent implements OnInit {
-  constructor(private router: Router, private http: HttpClient) {
-
-  }
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private _cs: ContactService
+  ) {}
 
   delform!: FormGroup;
 
@@ -37,8 +40,6 @@ export class MainComponent implements OnInit {
       ]),
     });
   }
-
-
 
   customEmailValidator(
     control: FormControl
@@ -93,20 +94,28 @@ export class MainComponent implements OnInit {
     const phoneVal = this.delform.getRawValue().contactNumber;
     const emailVal = this.delform.getRawValue().email;
 
+    this._cs.getnumber(phoneVal);
+
     if (
       (contactNumberControl && contactNumberControl.valid) ||
       (emailControl && emailControl.valid)
     ) {
-      this.router.navigate([`/verifydel/${selectedOption}`],);
+      this.router.navigate([`/verifydel/${selectedOption}`]);
     }
 
-    this.http.post('https://sportupapi.otobit.com/api/Player/delete-account/request-otp', this.delform.value).subscribe(x => {
-      console.log(x, 'x');
-
-    }, error => {
-      console.log(error, 'err');
-
-    })
+    this.http
+      .post(
+        'https://sportupapi.otobit.com/api/Player/delete-account/request-otp',
+        this.delform.value
+      )
+      .subscribe(
+        (x) => {
+          console.log(x, 'x');
+        },
+        (error) => {
+          console.log(error, 'err');
+        }
+      );
 
     console.log(this.delform, 'del main form');
   }
