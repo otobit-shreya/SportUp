@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ContactService } from '../service/contact.service';
+import { SnackbarService } from '../service/snackbar.service';
 
 interface RouteParams {
   id: string;
@@ -29,7 +30,8 @@ export class VerifydelaccComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
-    public _cs: ContactService
+    public _cs: ContactService,
+    private _snackbar: SnackbarService
   ) {
     const params = this.route.snapshot.params as RouteParams;
     this.id = params.id;
@@ -38,7 +40,8 @@ export class VerifydelaccComponent implements OnInit {
 
   ngOnInit(): void {
     this.verifydel = new FormGroup({
-      otp: new FormControl('', [Validators.required]),
+      otp: new FormControl('', [Validators.required, Validators.minLength(6),
+        Validators.maxLength(6),]),
     });
   }
 
@@ -62,15 +65,17 @@ export class VerifydelaccComponent implements OnInit {
           contactNumber: contactNumber,
         }
       )
-      .subscribe(
-        (x) => {
-          if (x) {
-            this.router.navigate(['/delconfirm']);
-          }
-        },
-        (error) => {
-          alert(error);
+      .subscribe((x) => {
+        if (x) {
+          this.router.navigate(['/delconfirm']);
         }
-      );
+      }, error=>{
+        if(error.status === 400){
+          this._snackbar.openSnackBar('Invalid OTP');
+        }else{
+          this._snackbar.openSnackBar('Unkown Error Occured')
+        }
+        
+      });
   }
 }

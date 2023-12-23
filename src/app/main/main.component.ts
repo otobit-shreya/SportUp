@@ -8,8 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { error } from 'console';
 import { ContactService } from '../service/contact.service';
+import { SnackbarService } from '../service/snackbar.service';
 @Component({
   selector: 'app-main',
   standalone: true,
@@ -21,7 +21,8 @@ export class MainComponent implements OnInit {
   constructor(
     private router: Router,
     private http: HttpClient,
-    private _cs: ContactService
+    private _cs: ContactService,
+    private _snackbar: SnackbarService
   ) {}
 
   delform!: FormGroup;
@@ -86,8 +87,7 @@ export class MainComponent implements OnInit {
   }
 
   onSubmit() {
-    const contactNumberControl = this.delform.get('contactNumber');
-    const emailControl = this.delform.get('email');
+   
     const selectedOption = this.delform.get('contactNumber')?.value
       ? 'contactNumber'
       : 'email';
@@ -95,13 +95,6 @@ export class MainComponent implements OnInit {
     const emailVal = this.delform.getRawValue().email;
 
     this._cs.getnumber(phoneVal);
-
-    if (
-      (contactNumberControl && contactNumberControl.valid) ||
-      (emailControl && emailControl.valid)
-    ) {
-      this.router.navigate([`/verifydel/${selectedOption}`]);
-    }
 
     this.http
       .post(
@@ -111,9 +104,11 @@ export class MainComponent implements OnInit {
       .subscribe(
         (x) => {
           console.log(x, 'x');
+          this.router.navigate([`/verifydel/${selectedOption}`]);
         },
         (error) => {
-          console.log(error, 'err');
+          this._snackbar.openSnackBar('An Unknown Error occured!');
+          console.log(error, 'rrrr');
         }
       );
 
