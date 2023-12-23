@@ -10,6 +10,7 @@ import {
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ContactService } from '../service/contact.service';
 import { SnackbarService } from '../service/snackbar.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface RouteParams {
   id: string;
@@ -31,7 +32,8 @@ export class VerifydelaccComponent implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     public _cs: ContactService,
-    private _snackbar: SnackbarService
+    private _snackbar: SnackbarService,
+    private _snackBar: MatSnackBar
   ) {
     const params = this.route.snapshot.params as RouteParams;
     this.id = params.id;
