@@ -23,7 +23,6 @@ interface RouteParams {
 export class VerifydelaccComponent implements OnInit {
   verifydel!: FormGroup;
   id: any;
-  
 
   constructor(private router: Router, private route: ActivatedRoute,private http: HttpClient) {
     const params = this.route.snapshot.params as RouteParams;
@@ -33,9 +32,11 @@ export class VerifydelaccComponent implements OnInit {
 
   ngOnInit(): void {
     this.verifydel = new FormGroup({
-      phoneNumber: new FormControl('', [
+      contactNumber: new FormControl('', [
+        
+      ]),
+      otp: new FormControl('', [
         Validators.required,
-        Validators.pattern('^[0-9]*$'),
       ]),
     });
   }
@@ -43,10 +44,10 @@ export class VerifydelaccComponent implements OnInit {
   onSubmit() {
     console.log('click');
 
-    const phoneNumberControl = this.verifydel.get('phoneNumber');
-    console.log(phoneNumberControl && phoneNumberControl.valid, 'ppp');
+    const contactNumberControl = this.verifydel.get('contactNumber');
+    console.log(contactNumberControl && contactNumberControl.valid, 'ppp');
 
-    if (phoneNumberControl && phoneNumberControl.valid) {
+    if (contactNumberControl && contactNumberControl.valid) {
       this.router.navigate(['/delconfirm']);
     }
     console.log(this.verifydel, 'verify del');
