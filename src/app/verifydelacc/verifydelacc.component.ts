@@ -64,10 +64,12 @@ export class VerifydelaccComponent implements OnInit {
       )
       .subscribe(
         (x) => {
-          console.log(x, 'x');
+          if (x) {
+            this.router.navigate(['/delconfirm']);
+          }
         },
         (error) => {
-          console.log(error, 'err');
+          alert(error);
         }
       );
   }
